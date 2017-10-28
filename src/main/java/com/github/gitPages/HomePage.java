@@ -3,7 +3,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
 /**
  * Represents Hopemage and activities on Homepagen
  * @author tmtinsi
@@ -27,20 +26,6 @@ public class HomePage extends BaseClass{
 	public  static HomePage getHomePage(WebDriver driver) throws Exception{
 	    return PageFactory.initElements(driver,
 	    		HomePage.class);	
-	}
-	
-	/**
-	 * IssuesPagen
-	 * @param driver
-	 * @param baseUrl
-	 * @param path
-	 * @return IssuesPage
-	 * @author tmtinsi
-	 */
-	public static IssuesPage getIssuesPage(WebDriver driver, String baseUrl, String path) throws Exception{
-		driver.get(baseUrl + path);
-	    return PageFactory.initElements(driver,
-	    		IssuesPage.class);	
 	}
 	
 	/**
