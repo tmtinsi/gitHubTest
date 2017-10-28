@@ -1,13 +1,10 @@
 package com.github.gitHubTests;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
@@ -16,12 +13,8 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-import org.apache.http.HttpStatus;
-import com.github.gitPages.APIUtils;
 import com.github.gitPages.BaseClass;
 import com.github.gitPages.HomePage;
-import com.github.gitPages.IssuePage;
-import com.github.gitPages.IssuesPage;
 import com.github.gitPages.ChallengingDomPage;
 
 /**
@@ -180,102 +173,5 @@ public class UI_APITest {
 		Assert.assertTrue(possibleButtonText.contains(redButtonText));
 		Assert.assertTrue(possibleButtonText.contains(greenButtonText));
 	}
-	/**
-	 * @testsummary - Demonstrate API use of creating an issue by creating an issue under user and repo
-	 * 				- Uses following JSON as an example to post@ http://api.github.com. Uses httpPosst
-	 * {
-		  "title": "Found a bug",
-		  "body": "I'm having a problem with this.",
-		  "assignee": "octocat",
-		  "milestone": 1,
-		  "labels": [
-		    "Label1",
-		    "Label2"
-  			]	
-  		}
-	 * @testCase -Test Case 2 
-	 * @testSteps
-	 * 	 -1 Authenitcate @http://api.github.com using a token
-	 *   -2 Create the issue*    
-	 * @testlink  n/a
-	 * @testconfiguration n/a
-	 * @testprerequisites n/a
-	 * @author-tmtinsi	 
-	 * 
-	 * @throws Exception
-	 */
-	@Test(groups = { "api"})
-	public void createAPIIssueTest() throws Exception{
-			APIUtils apiUtils = new APIUtils();
-			String create_uri = "api.github.com/repos/tmtinsi/AutomationSwrveTest/issues";
-			InputStream is = apiUtils.postJSONObject(apiUtils.json(),apiUtils.basicAUthtoken()+create_uri);
-			String readStringContent = apiUtils.readStringContent(is);
-			Assert.assertNotNull(readStringContent," No return string from page");
-			Assert.assertEquals(APIUtils.statusCode, (HttpStatus.SC_CREATED));
-			System.out.println(readStringContent);
-			logger.info(readStringContent + " createAPIIssueTest() string content\n");
-	}
-	
-	/**
-	 * @testsummary - Demonstrate API use of listing issues. uses httpGET
-	 * 				- Uses GET /user/issues @ http://api.github.com
-	 * @testCase -Test Case 2 
-	 * @testSteps
-	 * 	 -1 Authenitcate @ttp://www.api.github.com using a token
-	 *   -2 List issues*    
-	 * @testlink  n/a
-	 * @testconfiguration n/a
-	 * @testprerequisites n/a
-	 * @author-tmtinsi	 
-	 * 
-	 * @throws Exception
-	 */
-	// making sure you list after creating
-	@Test(groups = { "api" },dependsOnMethods = { "createAPIIssueTest" })
-	public void listAPIIssuesTest() throws Exception{
-		String list_uri = "api.github.com/user";
-		APIUtils apiUtils = new APIUtils();
-		InputStream is = apiUtils.getJSONObject(apiUtils.basicAUthtoken()+list_uri);
-		String readStringContent = apiUtils.readStringContent(is);
-		Assert.assertEquals(APIUtils.statusCode, (HttpStatus.SC_OK));
-		Assert.assertNotNull(readStringContent);
-		logger.info(readStringContent + " listAPIIssuesTest() string content\n");
-	}
-	
-	/**
-	 * @testsummary - Demonstrate API use of editing an issue by patching issue under user and repo
-	 * 				- Uses following JSON as an example to patch@ http://api.github.com.Uses httpPatch
-	 * {
-		  "title": "Found a bug",
-		  "body": "I'm having a problem with this.",
-		  "assignee": "octocat",
-		  "milestone": 1,
-		  "state": "open",
-		  "labels": [
-		    "Label1",
-		    "Label2"
-  			]	
-  		}
-	 * @testCase -Test Case 2 
-	 * @testSteps
-	 * 	 -1 Authenitcate @ttp://www.api.github.com using a token
-	 *   -2 Create the issue*    
-	 * @testlink  n/a
-	 * @testconfiguration n/a
-	 * @testprerequisites n/a
-	 * @author-tmtinsi	 
-	 * 
-	 * @throws Exception
-	 */
-	// making sure you modify after creating
-	@Test(groups = { "api" },dependsOnMethods = { "createAPIIssueTest" })
-	public void modifyAPIIssueTest() throws Exception{
-		String modif_uri = "api.github.com/repos/tmtinsi/AutomationSwrveTest/issues/1";
-		APIUtils apiUtils = new APIUtils();
-		InputStream is = apiUtils.patchJSONObject(apiUtils.basicAUthtoken()+modif_uri);
-		String readStringContent = apiUtils.readStringContent(is);
-		Assert.assertEquals(APIUtils.statusCode, (HttpStatus.SC_OK));
-		Assert.assertNotNull(readStringContent);
-		logger.info(readStringContent + " modifyAPIIssueTest() string content\n");
-	}
+
 }
