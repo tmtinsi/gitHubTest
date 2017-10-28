@@ -18,7 +18,7 @@ import com.github.gitPages.HomePage;
 import com.github.gitPages.ChallengingDomPage;
 
 /**
- * Represents gitHUB UI and APItests Test Cases
+ * Represents gitHUB UI tests on herokuapp.com Test Cases
  * @author tmtinsi
  */
 public class UI_APITest {
@@ -29,8 +29,6 @@ public class UI_APITest {
 	String winHandleBefore = null;
 	String url = null;
 	String baseUrl = null;
-	String repo = null;
-	
 	List<String> possibleButtonText = Arrays.asList("qux", "baz", "foo", "bar"); 
 		
 	/**
@@ -71,8 +69,7 @@ public class UI_APITest {
 	}
 	
 	/**
-	 * @testsummary - Demonstrate GUI testing by Listing all issues by user
-	 * 				Editing the issue and closing the issue@ http://www.github.com
+	 * @testsummary - Demonstrate GUI testing  .herokuapp.comm
 	 * @testCase -Test Case 1 
 	 * @testSteps
 	 * 	 -1 launch https://the-internet.herokuapp.com homepage
@@ -93,8 +90,6 @@ public class UI_APITest {
 		String path =  "/challenging_dom";
 		challengingDomPage = challengingDomPage.navigateTo(driver,baseUrl,path);
 		homePage = HomePage.getHomePage(driver);
-		
-		//verify page title of challengingDomPage present
 		Assert.assertTrue(challengingDomPage.getElementChallengingDomText().contains("Challenging DOM"));
 	}
 	
@@ -104,6 +99,7 @@ public class UI_APITest {
 	 * verify blue, red and green button text is contained in the possible text list
 	 * @throws Exception
 	 */
+	
 	@Test(priority=1, groups = { "ui" })
 	public void testBlueButtonPresence() throws Exception{
 		logger.info("Start of Challenging DOM"); 
@@ -125,6 +121,13 @@ public class UI_APITest {
 		Assert.assertTrue(possibleButtonText.contains(redButtonText));
 		Assert.assertTrue(possibleButtonText.contains(greenButtonText));
 	}
+	
+	/**
+	 * Verify the red button exists
+	 * click on the red button
+	 * verify blue, red and green button text is contained in the possible text list
+	 * @throws Exception
+	 */
 	
 	@Test(priority=1, groups = { "ui" })
 	public void testRedButtonPresence() throws Exception{
@@ -148,6 +151,13 @@ public class UI_APITest {
 		Assert.assertTrue(possibleButtonText.contains(greenButtonText));
 	}
 	
+	/**
+	 * Verify the green button exists
+	 * click on the green button
+	 * verify blue, red and green button text is contained in the possible text list
+	 * @throws Exception
+	 */
+	
 	@Test(priority=1, groups = { "ui" })
 	public void testGreenButtonPresence() throws Exception{
 		logger.info("Start of Challenging DOM"); 
@@ -166,12 +176,57 @@ public class UI_APITest {
 		logger.info("RED BUTTON TEXT ----> " + redButtonText);
 		logger.info("RED BUTTON TEXT ----> " + greenButtonText);
 		
-		String script = "return arguments[0].innerHTML";
-		logger.info("SCRIPT   " + script);
-		logger.info("CANVAS TEXT -----> "+ challengingDomPage.getcanvasContextText());
 		Assert.assertTrue(possibleButtonText.contains(blueButtonText));
 		Assert.assertTrue(possibleButtonText.contains(redButtonText));
 		Assert.assertTrue(possibleButtonText.contains(greenButtonText));
 	}
+	
+	@Test(priority=1, groups = { "ui" })
+	public void testAnswerImageCanvasPresence() throws Exception{
+		logger.info("Start of Challenging DOM"); 
+		String path =  "/challenging_dom";
+		challengingDomPage = challengingDomPage.navigateTo(driver,baseUrl,path);
+		homePage = HomePage.getHomePage(driver);
 
+		boolean canvasPresent = challengingDomPage.isCanvasPresent();
+		
+		//test presence of the image which display the result
+		Assert.assertTrue(canvasPresent);		
+		
+		//test the answere is displayed
+	}
+	
+	/**
+	 * test that all rows exists and that the edit link on each row exist 
+	 * and that when you click on it gives a url response.
+	 * "edit" is not disables its only that the hreff returns a response which you can verify on the url 
+	 * @throws Exception
+	 */
+	@Test(priority=1, groups = { "ui" })
+	public void testEditButtonUrlResponse() throws Exception{
+		logger.info("Start of Challenging DOM"); 
+		String path =  "/challenging_dom";
+		challengingDomPage = challengingDomPage.navigateTo(driver,baseUrl,path);
+		homePage = HomePage.getHomePage(driver);
+		
+		//challengingDomPage.findWebElementOnTable("edit");
+		challengingDomPage.checkLinkText("edit");
+	}
+	
+	/**
+	 * test that all rows exists and that the edit link on each row exist 
+	 * and that when you click on it gives a url response.
+	 * "delete" is not disables its only that the hreff returns a response which you can verify on the url 
+	 * @throws Exception
+	 */
+	@Test(priority=1, groups = { "ui" })
+	public void testDeleteButtonUrlResponse() throws Exception{
+		logger.info("Start of Challenging DOM"); 
+		String path =  "/challenging_dom";
+		challengingDomPage = challengingDomPage.navigateTo(driver,baseUrl,path);
+		homePage = HomePage.getHomePage(driver);
+		
+		//challengingDomPage.findWebElementOnTable("edit");
+		challengingDomPage.checkLinkText("delete");
+	}
 }
